@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "Add Custom Header for Gemini",
+  "version": "1.0",
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "declarativeNetRequest",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
