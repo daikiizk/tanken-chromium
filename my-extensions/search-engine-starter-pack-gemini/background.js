@@ -21,3 +21,5 @@ chrome.declarativeNetRequest.updateDynamicRules({
   ],
   removeRuleIds: [1], // 既存のルールを削除してから追加
 });
+
+// https://gyazo.com/01ed22a2954cc4a512d09cb416bea015
