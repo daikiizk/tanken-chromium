@@ -6,7 +6,7 @@
     "declarativeNetRequest",
     "declarativeNetRequestWithHostAccess"
   ],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": ["https://gemini.google.com/*"],
   "background": {
     "service_worker": "background.js"
   }
