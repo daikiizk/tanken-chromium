@@ -9,12 +9,7 @@ const targetRootDirs = [
   "ui",
   //"third_party"
 ];
-const exts = [
-  ".cc",
-  ".h",
-  // ".js",
-  // ".ts",
-];
+const exts = [".cc", ".h", ".js", ".ts"];
 
 async function findFilesWithExtension(dir, ext, fileList = []) {
   const files = await fs.promises.readdir(dir);
