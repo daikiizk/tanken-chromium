@@ -5,6 +5,13 @@ const targetRootDirs = ["chrome"];
 
 async function main() {
   const dirs = await fs.promises.readdir(chromiumPath);
+  for (const dir of dirs) {
+    if (!targetRootDirs.includes(dir)) {
+      continue;
+    }
+    const path = `${chromiumPath}/${dir}`;
+    console.log(`Processing: ${path}`);
+  }
 }
 
 main();
