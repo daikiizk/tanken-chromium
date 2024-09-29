@@ -10,10 +10,10 @@ const targetRootDirs = [
   //"third_party"
 ];
 const exts = [
-  //".cc",
-  //".h",
-  ".js",
-  ".ts",
+  ".cc",
+  ".h",
+  // ".js",
+  // ".ts",
 ];
 
 async function findFilesWithExtension(dir, ext, fileList = []) {
@@ -45,7 +45,7 @@ async function extractComments(filePath, ext) {
   const blockComment = [];
   for (const _line of lines) {
     const line = _line.trim();
-    if (ext === ".js" || ext === ".ts") {
+    if (ext === ".js" || ext === ".ts" || ext === ".cc" || ext === ".h") {
       if (JS_MULTI_HEAD.test(line) || blockComment.length > 0) {
         // `/*`で始まり`*/`で終わる複数行コメントを抽出
         if (JS_MULTI_TAIL.test(line)) {
@@ -61,6 +61,7 @@ async function extractComments(filePath, ext) {
         }
       } else if (JS_SINGLE.test(line)) {
         // `//`で始まる単一行コメントを抽出
+        // TODO: 連続する場合はひとまとまりにしたい
         comments.push(line.replace(JS_SINGLE, "").trim());
       }
     }
