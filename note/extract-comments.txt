@@ -1,0 +1,6 @@
+Processing: /home/daiiz/daiiz2/chromium/chrome
+chrome .js 3377
+chrome .ts 3754
+Processing: /home/daiiz/daiiz2/chromium/ui
+ui .js 67
+ui .ts 697
