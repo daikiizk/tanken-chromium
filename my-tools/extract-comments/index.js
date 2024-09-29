@@ -57,7 +57,7 @@ async function extractComments(filePath, ext) {
         } else if (JS_MULTI_HEAD.test(line)) {
           blockComment.push(line.replace(JS_MULTI_HEAD, "").trim());
         } else {
-          blockComment.push("  " + line.replace(JS_MULTI_MIDDLE, "").trim());
+          blockComment.push(line.replace(JS_MULTI_MIDDLE, "").trim());
         }
       } else if (JS_SINGLE.test(line)) {
         // `//`で始まる単一行コメントを抽出
