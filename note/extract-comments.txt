@@ -1,6 +1,9 @@
 Processing: /home/daiiz/daiiz2/chromium/chrome
-chrome .js 3377
-chrome .ts 3754
+.js 3377
+.ts 3754
+Processing: /home/daiiz/daiiz2/chromium/third_party
+.js 14144
+.ts 464
 Processing: /home/daiiz/daiiz2/chromium/ui
-ui .js 67
-ui .ts 697
+.js 67
+.ts 697

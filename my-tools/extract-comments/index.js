@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const chromiumPath = "/home/daiiz/daiiz2/chromium";
-const targetRootDirs = ["chrome", "ui"];
+const targetRootDirs = ["chrome", "ui", "third_party"];
 const exts = [
   //".cc",
   //".h",
@@ -37,7 +37,7 @@ async function main() {
     console.log(`Processing: ${path}`);
     for (const ext of exts) {
       const filePaths = await findFilesWithExtension(path, ext);
-      console.log(dir, ext, filePaths.length);
+      console.log(ext, filePaths.length);
     }
   }
 }
