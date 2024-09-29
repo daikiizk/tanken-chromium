@@ -43,7 +43,8 @@ async function extractComments(filePath, ext) {
 
   const comments = [];
   const blockComment = [];
-  for (const _line of lines) {
+  let singlePrevIdx = -1;
+  for (const [idx, _line] of lines.entries()) {
     const line = _line.trim();
     if (ext === ".js" || ext === ".ts" || ext === ".cc" || ext === ".h") {
       if (JS_MULTI_HEAD.test(line) || blockComment.length > 0) {
@@ -61,11 +62,24 @@ async function extractComments(filePath, ext) {
         }
       } else if (JS_SINGLE.test(line)) {
         // `//`で始まる単一行コメントを抽出
-        // TODO: 連続する場合はひとまとまりにしたい
-        comments.push(line.replace(JS_SINGLE, "").trim());
+        const res = line.replace(JS_SINGLE, "").trim();
+        // 連続する場合はひとまとまりにする
+        if (res.length > 0) {
+          if (singlePrevIdx >= 0 && singlePrevIdx + 1 === idx) {
+            comments[comments.length - 1] += "\n" + res;
+          } else {
+            comments.push(res);
+          }
+        }
+        singlePrevIdx = idx;
       }
     }
   }
+
+  if (blockComment.length > 0) {
+    comments.push(blockComment.filter((x) => !!x).join("\n"));
+  }
+
   console.log(filePath.split("/").pop(), comments);
 }
 
