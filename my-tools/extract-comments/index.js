@@ -2,7 +2,13 @@ const fs = require("fs");
 const path = require("path");
 
 const chromiumPath = "/home/daiiz/daiiz2/chromium";
-const targetRootDirs = ["chrome", "ui", "third_party"];
+const outDataDir = "./out/extract-comments";
+
+const targetRootDirs = [
+  //"chrome",
+  "ui",
+  //"third_party"
+];
 const exts = [
   //".cc",
   //".h",
@@ -37,7 +43,10 @@ async function main() {
     console.log(`Processing: ${path}`);
     for (const ext of exts) {
       const filePaths = await findFilesWithExtension(path, ext);
+      const outDataPath = `${outDataDir}/${dir}_${ext}.json`;
       console.log(ext, filePaths.length);
+      await fs.promises.writeFile(outDataPath, JSON.stringify({}, null, 2));
+      console.log(">", outDataPath);
     }
   }
 }
