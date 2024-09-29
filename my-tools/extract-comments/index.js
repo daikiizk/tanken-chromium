@@ -33,6 +33,39 @@ async function findFilesWithExtension(dir, ext, fileList = []) {
   return fileList;
 }
 
+async function extractComments(filePath, ext) {
+  const lines = (await fs.promises.readFile(filePath, "utf-8")).split("\n");
+
+  const comments = [];
+  const blockComment = [];
+  for (const _line of lines) {
+    const line = _line.trim();
+    if (ext === ".js" || ext === ".ts") {
+      if (line.startsWith("/*") || blockComment.length > 0) {
+        // `/*`で始まり`*/`で終わる複数行コメントを抽出
+        if (line.includes("*/")) {
+          blockComment.push(
+            line
+              .replace(/^\/\*+/, "")
+              .replace(/\*\//, "")
+              .trim()
+          );
+          comments.push(blockComment.filter((x) => !!x).join("\n"));
+          blockComment.length = 0;
+        } else if (line.startsWith("/*")) {
+          blockComment.push(line.replace(/^\/\*+/, "").trim());
+        } else {
+          blockComment.push("  " + line.replace(/^\*+/, "").trim());
+        }
+      } else if (line.startsWith("//")) {
+        // `//`で始まる単一行コメントを抽出
+        comments.push(line.replace(/^\/\//, "").trim());
+      }
+    }
+  }
+  console.log(filePath.split("/").pop(), comments);
+}
+
 async function main() {
   const dirs = await fs.promises.readdir(chromiumPath);
   for (const dir of dirs) {
@@ -45,6 +78,9 @@ async function main() {
       const filePaths = await findFilesWithExtension(path, ext);
       const outDataPath = `${outDataDir}/${dir}_${ext}.json`;
       console.log(ext, filePaths.length);
+      for (let i = 0; i < filePaths.length; i++) {
+        await extractComments(filePaths[i], ext);
+      }
       await fs.promises.writeFile(outDataPath, JSON.stringify({}, null, 2));
       console.log(">", outDataPath);
     }
