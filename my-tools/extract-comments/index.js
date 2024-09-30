@@ -28,6 +28,10 @@ async function findFilesWithExtension(dir, ext, fileList = []) {
   return fileList;
 }
 
+function trimTail(str) {
+  return str.replace(/\s+$/, "");
+}
+
 async function extractComments(filePath, ext) {
   const JS_SINGLE = /^\/\//;
   const JS_MULTI_HEAD = /^\/\*+/;
@@ -40,24 +44,24 @@ async function extractComments(filePath, ext) {
   const blockComment = [];
   let singlePrevIdx = -1;
   for (const [idx, _line] of lines.entries()) {
-    const line = _line.trim();
+    const line = trimTail(_line);
     if (ext === ".js" || ext === ".ts" || ext === ".cc" || ext === ".h") {
       if (JS_MULTI_HEAD.test(line) || blockComment.length > 0) {
         // `/*`で始まり`*/`で終わる複数行コメントを抽出
         if (JS_MULTI_TAIL.test(line)) {
           blockComment.push(
-            line.replace(JS_MULTI_HEAD, "").replace(JS_MULTI_TAIL, "").trim()
+            trimTail(line.replace(JS_MULTI_HEAD, "").replace(JS_MULTI_TAIL, ""))
           );
           comments.push(blockComment.filter((x) => !!x).join("\n"));
           blockComment.length = 0;
         } else if (JS_MULTI_HEAD.test(line)) {
-          blockComment.push(line.replace(JS_MULTI_HEAD, "").trim());
+          blockComment.push(trimTail(line.replace(JS_MULTI_HEAD, "")));
         } else {
-          blockComment.push(line.replace(JS_MULTI_MIDDLE, "").trim());
+          blockComment.push(trimTail(line.replace(JS_MULTI_MIDDLE, "")));
         }
       } else if (JS_SINGLE.test(line)) {
         // `//`で始まる単一行コメントを抽出
-        const res = line.replace(JS_SINGLE, "").trim();
+        const res = trimTail(line.replace(JS_SINGLE, ""));
         // 連続する場合はひとまとまりにする
         if (res.length > 0) {
           if (singlePrevIdx >= 0 && singlePrevIdx + 1 === idx) {
