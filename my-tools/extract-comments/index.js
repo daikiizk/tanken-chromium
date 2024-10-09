@@ -1,3 +1,4 @@
+// $ node my-tools/extract-comments/index.js > note/extract-comments.txt
 const fs = require("fs");
 const path = require("path");
 
